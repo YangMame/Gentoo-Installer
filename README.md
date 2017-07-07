@@ -1,2 +1,2 @@
 # Gentoo-Installer
-For Myself to use maybe later I can write another one
+## 测试ing 请不要拿来使用
