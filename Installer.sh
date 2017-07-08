@@ -68,9 +68,11 @@ sync-uri = rsync://rsync.mirrors.ustc.edu.cn/gentoo-portage/
 auto-sync = yes" >> /mnt/gentoo/etc/portage/repos.conf/gentoo.conf ##同上上
 
 ##chroot
-mount -t proc none proc
-mount --rbind /sys sys
-mount --rbind /dev dev
+mount -t proc /proc /mnt/gentoo/proc
+mount --rbind /sys /mnt/gentoo/sys
+mount --make-rslave /mnt/gentoo/sys 
+mount --rbind /dev /mnt/gentoo/dev 
+mount --make-rslave /mnt/gentoo/dev
 cp /etc/resolv.conf /mnt/gentoo/etc/
 cd root/
 wget https://raw.githubusercontent.com/yangxins/Gentoo-Installer/master/Config.sh
