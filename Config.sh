@@ -65,6 +65,8 @@ done
 emerge  sys-kernel/linux-firmware
 
 ##NetWork
+emerge -a networkmanager
+etc-update
 emerge networkmanager
 systemctl enable NetworkManager
 read -p "Input your hostname  " TMP
