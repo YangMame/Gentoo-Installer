@@ -43,7 +43,7 @@ fi
 
 ##安装文件
 cd /mnt/gentoo
-wget -c -r -np -k -L -p  http://mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/
+wget -c -r -np -k -L -p http://mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/current-stage3-amd64-systemd/
 cp mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/current-stage3-amd64-systemd/stage3-amd64-systemd*.tar.bz2 install.tar.bz2
 tar xvjpf install.tar.bz2 --xattrs --numeric-owner
 rm -r mirrors.ustc.edu.cn/ install.tar.bz2
