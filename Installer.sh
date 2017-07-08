@@ -49,10 +49,11 @@ tar xvjpf install.tar.bz2 --xattrs --numeric-owner
 rm -r mirrors.ustc.edu.cn/ install.tar.bz2
 
 ##配置make.conf
-echo "GENTOO_MIRRORS=\"https://mirrors.ustc.edu.cn/gentoo/\" ">> /mnt/gentoo/etc/portage/make.conf
+sed -i 's/CFLAGS=\"-O2 -pipe\"/CFLAGS=\"-march=native -O2 -pipe\"/g' ##你可以在此根据你的CPU修改优化例如改成-march=haswell -O3 -pipe（主要是因为我懒 后期会加上）
+echo "GENTOO_MIRRORS=\"https://mirrors.ustc.edu.cn/gentoo/\" ">> /mnt/gentoo/etc/portage/make.conf ##如果此软件源巨慢或者你在国外 可以自行修改
 echo "L10N=\"en-US zh-CN\"
 LINGUAS=\"en_US zh_CN\"" >> /mnt/gentoo/etc/portage/make.conf
-read -p "Edit the make.conf ?  " TMP
+read -p "Edit the make.conf if you want to add your video cards like VIDEO_CARDS=\"intel\" VIDEO_CARDS=\"nvidia\" or VIDEO_CARDS=\"intel i965 nvidia\"" TMP ##懒得加选择  其实无所谓 可以自己手动安装
 if [ "$TMP" == y ]
 then nano  /mnt/gentoo/etc/portage/make.conf
 fi
@@ -64,7 +65,16 @@ main-repo = gentoo
 location = /usr/portage                                       
 sync-type = rsync                                             
 sync-uri = rsync://rsync.mirrors.ustc.edu.cn/gentoo-portage/  
-auto-sync = yes" >> /mnt/gentoo/etc/portage/repos.conf/gentoo.conf
+auto-sync = yes" >> /mnt/gentoo/etc/portage/repos.conf/gentoo.conf ##同上上
 
 ##chroot
-arch-chroot /mnt/gentoo /bin/bash
+mount -t proc none proc
+mount --rbind /sys sys
+mount --rbind /dev dev
+cp /etc/resolv.conf /mnt/gentoo/etc/
+cd root/
+wget https://raw.githubusercontent.com/yangxins/Gentoo-Installer/master/Config.sh
+chmod +x Config.sh
+rm /mnt/gentoo/etc/fstab
+genfstab -U -p /mnt/gentoo >> /mnt/gentoo/etc/fstab
+chroot /mnt/gentoo /root/Config.sh
