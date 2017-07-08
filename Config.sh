@@ -89,5 +89,5 @@ grub-install --target=i386-pc $GRUB
 fi
 ln -sf /proc/self/mounts /etc/mtab
 systemd-machine-id-setup
-sed -i 's/## GRUB_CMDLINE_LINUX=\"init=/usr/lib/systemd/systemd\"/GRUB_CMDLINE_LINUX=\"init=/usr/lib/systemd/systemd\""' /etc/default/grub
+sed -i 's/## GRUB_CMDLINE_LINUX=\"init=/usr/lib/systemd/systemd\"/GRUB_CMDLINE_LINUX=\"init=/usr/lib/systemd/systemd\"/g' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
