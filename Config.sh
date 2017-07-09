@@ -25,7 +25,7 @@ eselect locale set $TMP
 ##内核
 read -p "Do you want to use the latest kernel ? " TMP
 if [ "$TMP" == y ]
-then echo sys-kernel/gentoo-sources > /etc/portage/package.accept_keywords
+then echo "sys-kernel/gentoo-sources ~amd64" > /etc/portage/package.accept_keywords
 fi
 emerge gentoo-sources genkernel
 while (($TMP!=1&&$TMP!=2&&$TMP!=3));do
@@ -37,7 +37,7 @@ if (($TMP==1))
 then wget https://raw.githubusercontent.com/yangxins/Gentoo-Installer/master/Kernel-Config/Ubuntu.config
 mv Ubuntu.config /usr/src/linux/.config
 cd /usr/src/linux
-read -p	"Are you using btrfs  filesystem" tmp ##在这里你可以修改成你使用的文件系统
+read -p	"Are you using btrfs  filesystem (y or Enter " tmp ##在这里你可以修改成你使用的文件系统
 if [ "$tmp" == y ]
 then emerge btrfs-progs
 fi
@@ -50,13 +50,13 @@ elif (($TMP==2))
 then genkernel all
 elif (($TMP==3))
 then cd /usr/src/linux
-read -p "Download form internet ? " tmp
+read -p "Download form internet ? (y or Enter  " tmp
 if [ "$tmp" == y ]
 then read -p "Input the link to download :" tmp
 wget $tmp -O .config
 fi
 make menuconfig
-make -j8 && make modul
+make -j8 && make modules_install
 make install
 genkernel --install initramfses_install
 else echo Error ! Input the currect number !
@@ -65,7 +65,9 @@ done
 emerge  sys-kernel/linux-firmware
 
 ##NetWork
+read -p  "Install the networkmanager  : If it ask you to change the config file just agree it "
 emerge -a networkmanager
+read -p "Then it will ask you how to chnage the config file  , just input \"-3\" to write it"
 etc-update
 emerge networkmanager
 systemctl enable NetworkManager
@@ -79,7 +81,7 @@ crontab /etc/crontab
 
 
 ##GRUB
-read -p "Are you uefi ? " TMP
+read -p "Are you Uefi ? " TMP
 if [ "$tmp" == y ]
 then echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
 emerge grub
