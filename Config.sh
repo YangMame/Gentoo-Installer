@@ -7,7 +7,10 @@ emerge-webrsync
 emerge --sync
 eselect news read
 eselect profile list
-read -p "Input the num you want to use " TMP
+read -p "Input the num you want to use (You must select the systemd !!!
+If you have many software are GTK and you want to use gnome or other desktop which is using GTK , select gnome/systemd
+If you want to use KDE desktop or you have many software are using qt select plasma/systemd
+Just only select /systemd is not a good idea , if you're not sure please select gnome/systemd" TMP
 eselect profile set $TMP
 read -p "ENTER to update the system"
 emerge -uvDN @world
@@ -29,10 +32,12 @@ then echo "sys-kernel/gentoo-sources ~amd64" > /etc/portage/package.accept_keywo
 fi
 emerge gentoo-sources genkernel
 while (($TMP!=1&&$TMP!=2&&$TMP!=3));do
+read -p "You should select the systemd in kernel config like this Gentoo Linux --->Support for init systems....managers --->[*] systemd ENTER to continue"
 read -p "Which way you want to  compile
 [1]  Use Ubuntu kernel config (If you are a new user try this)
 [2]  Use genkernel all
-[3]  I will config by myself" TMP
+[3]  I will config by myself
+Input :  " TMP
 if (($TMP==1))
 then wget https://raw.githubusercontent.com/yangxins/Gentoo-Installer/master/Kernel-Config/Ubuntu.config
 mv Ubuntu.config /usr/src/linux/.config
