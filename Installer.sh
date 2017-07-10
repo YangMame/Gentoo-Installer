@@ -79,4 +79,11 @@ wget https://raw.githubusercontent.com/yangxins/Gentoo-Installer/master/Config.s
 chmod +x Config.sh
 rm /mnt/gentoo/etc/fstab
 genfstab -U -p /mnt/gentoo >> /mnt/gentoo/etc/fstab
+read -p "It will edit the fstab and you should make sure this file is all right
+you need to del something like efivarfs or cgroup
+If you found this file is empty without the right mount point
+Then you should open another terminal and run \"sudo blkid\"
+Write like this : UUID=XXX....  /   ext4    defaults    0 0
+ENTER to contiune "
+nano /mnt/gentoo/etc/fstab
 chroot /mnt/gentoo /root/Config.sh
