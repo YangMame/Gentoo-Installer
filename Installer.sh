@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ##分区
+mkdir /mnt/gentoo
 read -p "Do you want to adjust the partition ? (Input y to use fdisk or Enter to continue:  " TMP
 if [ "$TMP" == y ]
 then fdisk -l
@@ -16,7 +17,6 @@ if [ "$TMP" == y ]
 then mkfs.ext4 $ROOT
 else mkfs.btrfs $ROOT -f
 fi
-mkdir /mnt/gentoo
 mount $ROOT /mnt/gentoo
 fi
 read -p "Do you have the /boot mount point? (y or Enter  " BOOT
