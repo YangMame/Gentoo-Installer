@@ -83,7 +83,8 @@ echo $TMP > /etc/hostname
 emerge app-admin/sysklogd
 emerge sys-process/cronie
 crontab /etc/crontab
-
+echo "Change your password "
+passwd
 
 ##GRUB
 read -p "Are you Uefi ? " TMP
