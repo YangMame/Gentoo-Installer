@@ -68,6 +68,10 @@ if [ "$tmp" == y ]
 then read -p "Input the link to download :" tmp
 wget $tmp -O .config
 fi
+read -p	"Are you using btrfs filesystem (y or Enter " tmp
+if [ "$tmp" == y ]
+then emerge btrfs-progs
+fi
 make menuconfig
 make -j8 && make modules_install
 make install
