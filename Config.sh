@@ -27,7 +27,7 @@ read -p "Which locale you want to use " TMP
 eselect locale set $TMP
 
 ##内核
-read -p "Do you want to use the latest kernel ? " TMP
+read -p "Do you want to use the latest kernel ? (y or Enter  " TMP
 if [ "$TMP" == y ]
 then echo "sys-kernel/gentoo-sources ~amd64" > /etc/portage/package.accept_keywords
 fi
@@ -74,7 +74,7 @@ done
 emerge  sys-kernel/linux-firmware
 
 ##NetWork
-read -p  "Install the networkmanager  : If it ask you to change the config file just agree it "
+read -p  "Install the networkmanager (ENTER to contiune "
 emerge networkmanager
 systemctl enable NetworkManager
 read -p "Input your hostname  " TMP
@@ -89,7 +89,7 @@ passwd
 
 ##GRUB
 read -p "Are you Uefi ? " TMP
-if [ "$tmp" == y ]
+if [ "$TMP" == y ]
 then echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
 emerge grub
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Gentoo
