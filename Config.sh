@@ -5,8 +5,9 @@ source /etc/profile
 ##更新
 emerge-webrsync
 emerge --sync
-eselect news read
+echo "************************************************************"
 eselect profile list | grep systemd
+echo "************************************************************"
 read -p "Input the number you want to use (You must select the systemd !!!
 If you want to use gnome or other desktop which is using GTK , select gnome/systemd
 If you want to use KDE desktop select plasma/systemd
@@ -23,15 +24,18 @@ echo "en_US.UTF-8 UTF-8
 zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 eselect locale list
+echo "************************************************************"
 read -p "Which locale you want to use " TMP
 eselect locale set $TMP
 
 ##内核
+echo "************************************************************"
 read -p "Do you want to use the latest kernel ? (y or Enter  " TMP
 if [ "$TMP" == y ]
 then echo "sys-kernel/gentoo-sources ~amd64" > /etc/portage/package.accept_keywords
 fi
 emerge gentoo-sources genkernel
+echo "************************************************************"
 while (($TMP!=1&&$TMP!=2&&$TMP!=3));do
 read -p "You should select the systemd in kernel config like this：
 Gentoo Linux--->
@@ -74,9 +78,12 @@ done
 emerge  sys-kernel/linux-firmware
 
 ##NetWork
+echo "************************************************************"
 read -p  "Install the networkmanager (ENTER to contiune "
+emerge -a networkmanager
 emerge networkmanager
 systemctl enable NetworkManager
+echo "************************************************************"
 read -p "Input your hostname  " TMP
 echo $TMP > /etc/hostname
 
@@ -84,6 +91,7 @@ echo $TMP > /etc/hostname
 emerge app-admin/sysklogd
 emerge sys-process/cronie
 crontab /etc/crontab
+echo "************************************************************"
 echo "Change your password "
 passwd
 
