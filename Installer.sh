@@ -5,40 +5,40 @@ mkdir /mnt/gentoo
 read -p "Do you want to adjust the partition ? (Input y to use fdisk or Enter to continue:  " TMP
 if [ "$TMP" == y ]
 then fdisk -l
-read -p "Which disk do you want to adjust ? (/dev/sdX:  " DISK
-fdisk $DISK
+    read -p "Which disk do you want to adjust ? (/dev/sdX:  " DISK
+    fdisk $DISK
 fi
 fdisk -l
 read -p "Input the / mount point:  " ROOT
 read -p "Format it ? (y or Enter  " TMP
 if [ "$TMP" == y ]
 then read -p "Input y to use ext4 defalut to use btrfs  " TMP
-if [ "$TMP" == y ]
-then mkfs.ext4 $ROOT
-else mkfs.btrfs $ROOT -f
-fi
+    if [ "$TMP" == y ]
+    then mkfs.ext4 $ROOT
+    else mkfs.btrfs $ROOT -f
+    fi
 fi
 mount $ROOT /mnt/gentoo
 read -p "Do you have the /boot mount point? (y or Enter  " BOOT
 if [ "$BOOT" == y ]
 then fdisk -l
-read -p "Input the /boot mount point:  " BOOT
-read -p "Format it ? (y or Enter  " TMP
-if [ "$TMP" == y ]
-then mkfs.fat -F32 $BOOT
-fi
-mkdir /mnt/gentoo/boot
-mount $BOOT /mnt/gentoo/boot
+    read -p "Input the /boot mount point:  " BOOT
+    read -p "Format it ? (y or Enter  " TMP
+    if [ "$TMP" == y ]
+    then mkfs.fat -F32 $BOOT
+    fi
+    mkdir /mnt/gentoo/boot
+    mount $BOOT /mnt/gentoo/boot
 fi
 read -p "Do you have the swap partition ? (y or Enter  " SWAP
 if [ "$SWAP" == y ]
 then fdisk -l
-read -p "Input the swap mount point:  " SWAP
-read -P "Format it ? (y or Enter  " TMP
-if [ "$TMP" == y ]
-then mkswap $SWAP
-fi
-swapon $SWAP
+    read -p "Input the swap mount point:  " SWAP
+    read -P "Format it ? (y or Enter  " TMP
+    if [ "$TMP" == y ]
+    then mkswap $SWAP
+    fi
+    swapon $SWAP
 fi
 
 ##安装文件
@@ -58,20 +58,20 @@ if [ "$TMP" == y ]
 then nano  /mnt/gentoo/etc/portage/make.conf
 fi
 mkdir /mnt/gentoo/etc/portage/repos.conf
-echo "[DEFAULT]                                                     
-main-repo = gentoo                                            
-                                                              
-[gentoo]                                                      
-location = /usr/portage                                       
-sync-type = rsync                                             
-sync-uri = rsync://rsync.mirrors.ustc.edu.cn/gentoo-portage/  
+echo "[DEFAULT]
+main-repo = gentoo
+
+[gentoo]
+location = /usr/portage
+sync-type = rsync
+sync-uri = rsync://rsync.mirrors.ustc.edu.cn/gentoo-portage/
 auto-sync = yes" >> /mnt/gentoo/etc/portage/repos.conf/gentoo.conf ##同上上
 
 ##chroot
 mount -t proc /proc /mnt/gentoo/proc
 mount --rbind /sys /mnt/gentoo/sys
-mount --make-rslave /mnt/gentoo/sys 
-mount --rbind /dev /mnt/gentoo/dev 
+mount --make-rslave /mnt/gentoo/sys
+mount --rbind /dev /mnt/gentoo/dev
 mount --make-rslave /mnt/gentoo/dev
 cp /etc/resolv.conf /mnt/gentoo/etc/
 cd root/

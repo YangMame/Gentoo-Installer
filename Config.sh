@@ -37,47 +37,47 @@ fi
 emerge gentoo-sources genkernel
 echo "************************************************************"
 while (($TMP!=1&&$TMP!=2&&$TMP!=3));do
-read -p "You should select the systemd in kernel config like this：
+    read -p "You should select the systemd in kernel config like this：
 Gentoo Linux--->
     Support for init systems....managers --->
-        [*] systemd ENTER to continue"
-read -p "Which way you want to  compile
+    [*] systemd ENTER to continue"
+    read -p "Which way you want to  compile
 [1]  Use Ubuntu kernel config (If you are a new user try this)
 [2]  Use genkernel all
 [3]  I will config by myself
-Input :  " TMP
-if (($TMP==1))
-then wget https://raw.githubusercontent.com/yangxins/Gentoo-Installer/master/Kernel-Config/Ubuntu.config
-mv Ubuntu.config /usr/src/linux/.config
-cd /usr/src/linux
-read -p	"Are you using btrfs filesystem (y or Enter " tmp ##在这里你可以修改成你使用的文件系统
-if [ "$tmp" == y ]
-then emerge btrfs-progs
-fi
-echo "If you are using btrfs or other filesystem pelease select it or just exit it"
-make menuconfig
-make -j8 && make modules_install ##根据你CPU修改-j8 推荐核数x2
-make install
-genkernel --install initramfs
-elif (($TMP==2))
-then genkernel all
-elif (($TMP==3))
-then cd /usr/src/linux
-read -p "Download form internet ? (y or Enter  " tmp
-if [ "$tmp" == y ]
-then read -p "Input the link to download :" tmp
-wget $tmp -O .config
-fi
-read -p	"Are you using btrfs filesystem (y or Enter " tmp
-if [ "$tmp" == y ]
-then emerge btrfs-progs
-fi
-make menuconfig
-make -j8 && make modules_install
-make install
-genkernel --install initramfses_install
-else echo Error ! Input the currect number !
-fi
+    Input :  " TMP
+    if (($TMP==1))
+    then wget https://raw.githubusercontent.com/yangxins/Gentoo-Installer/master/Kernel-Config/Ubuntu.config
+        mv Ubuntu.config /usr/src/linux/.config
+        cd /usr/src/linux
+        read -p	"Are you using btrfs filesystem (y or Enter " tmp ##在这里你可以修改成你使用的文件系统
+        if [ "$tmp" == y ]
+        then emerge btrfs-progs
+        fi
+        echo "If you are using btrfs or other filesystem pelease select it or just exit it"
+        make menuconfig
+        make -j8 && make modules_install ##根据你CPU修改-j8 推荐核数x2
+        make install
+        genkernel --install initramfs
+    elif (($TMP==2))
+    then genkernel all
+    elif (($TMP==3))
+    then cd /usr/src/linux
+        read -p "Download form internet ? (y or Enter  " tmp
+        if [ "$tmp" == y ]
+        then read -p "Input the link to download :" tmp
+            wget $tmp -O .config
+        fi
+        read -p	"Are you using btrfs filesystem (y or Enter " tmp
+        if [ "$tmp" == y ]
+        then emerge btrfs-progs
+        fi
+        make menuconfig
+        make -j8 && make modules_install
+        make install
+        genkernel --install initramfses_install
+    else echo Error ! Input the currect number !
+    fi
 done
 emerge  sys-kernel/linux-firmware
 
@@ -103,12 +103,12 @@ passwd
 read -p "Are you Uefi ? " TMP
 if [ "$TMP" == y ]
 then echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
-emerge grub
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Gentoo
+    emerge grub
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Gentoo
 else emerge grub
-fdisk -l
-read -p "Input the disk you want to install the grub  " GRUB
-grub-install --target=i386-pc $GRUB
+    fdisk -l
+    read -p "Input the disk you want to install the grub  " GRUB
+    grub-install --target=i386-pc $GRUB
 fi
 ln -sf /proc/self/mounts /etc/mtab
 systemd-machine-id-setup
