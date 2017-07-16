@@ -40,8 +40,9 @@ while (($TMP!=1&&$TMP!=2&&$TMP!=3));do
     read -p "You should select the systemd in kernel config like this：
 Gentoo Linux--->
     Support for init systems....managers --->
-    [*] systemd ENTER to continue"
-    read -p "Which way you want to  compile
+        [*] systemd
+ENTER to continue"
+    read -p "Which way you want to compile
 [1]  Use Ubuntu kernel config (If you are a new user try this)
 [2]  Use genkernel all
 [3]  I will config by myself

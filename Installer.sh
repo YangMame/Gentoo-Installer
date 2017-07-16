@@ -53,7 +53,7 @@ sed -i 's/CFLAGS=\"-O2 -pipe\"/CFLAGS=\"-march=native -O2 -pipe\"/g' /mnt/gentoo
 echo "GENTOO_MIRRORS=\"https://mirrors.ustc.edu.cn/gentoo/\" ">> /mnt/gentoo/etc/portage/make.conf ##如果此软件源巨慢或者你在国外 可以自行修改
 echo "L10N=\"en-US zh-CN\"
 LINGUAS=\"en_US zh_CN\"" >> /mnt/gentoo/etc/portage/make.conf
-read -p "Edit the make.conf if you want to add your video cards like VIDEO_CARDS=\"intel\" VIDEO_CARDS=\"nvidia\" or VIDEO_CARDS=\"intel i965 nvidia\"" TMP ##懒得加选择  其实无所谓 可以自己手动安装
+read -p "Edit the make.conf if you want to add your video cards like VIDEO_CARDS=\"intel\" VIDEO_CARDS=\"nvidia\" or VIDEO_CARDS=\"intel i965 nvidia\"(y or ENTER" TMP ##懒得加选择  其实无所谓 可以自己手动安装
 if [ "$TMP" == y ]
 then nano  /mnt/gentoo/etc/portage/make.conf
 fi
