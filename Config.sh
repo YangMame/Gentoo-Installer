@@ -36,7 +36,7 @@ then echo "sys-kernel/gentoo-sources ~amd64" > /etc/portage/package.accept_keywo
 fi
 emerge gentoo-sources genkernel
 echo "************************************************************"
-TMP=1
+TMP=4
 while (($TMP!=1&&$TMP!=2&&$TMP!=3));do
     read -p "You should select the systemd in kernel config like this：
 Gentoo Linux--->
