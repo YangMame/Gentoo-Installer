@@ -36,6 +36,7 @@ then echo "sys-kernel/gentoo-sources ~amd64" > /etc/portage/package.accept_keywo
 fi
 emerge gentoo-sources genkernel
 echo "************************************************************"
+TMP=1
 while (($TMP!=1&&$TMP!=2&&$TMP!=3));do
     read -p "You should select the systemd in kernel config like this：
 Gentoo Linux--->
@@ -46,7 +47,7 @@ ENTER to continue"
 [1]  Use Ubuntu kernel config (If you are a new user try this)
 [2]  Use genkernel all
 [3]  I will config by myself
-    Input :  " TMP
+Input : " TMP
     if (($TMP==1))
     then wget https://raw.githubusercontent.com/yangxins/Gentoo-Installer/master/Kernel-Config/Ubuntu.config
         mv Ubuntu.config /usr/src/linux/.config
