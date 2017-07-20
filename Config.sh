@@ -85,9 +85,9 @@ emerge  sys-kernel/linux-firmware
 
 ##NetWork
 echo "************************************************************"
-etc-update --automode -3
 read -p  "Install the networkmanager (ENTER to contiune "
 emerge -a networkmanager
+etc-update --automode -3
 emerge networkmanager
 systemctl enable NetworkManager
 echo "************************************************************"
