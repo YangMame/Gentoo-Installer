@@ -13,7 +13,7 @@ If you want to use gnome or other desktop which is using GTK , select gnome/syst
 If you want to use KDE desktop select plasma/systemd
 Just only select /systemd is not a good idea , if you're not sure please select gnome/systemd
 " TMP
-eselect profile set $TMP
+eselect profile set $PROFILE
 read -p "ENTER to update the system"
 emerge -uvDN @world
 
@@ -85,6 +85,7 @@ emerge  sys-kernel/linux-firmware
 
 ##NetWork
 echo "************************************************************"
+etc-update --automode -3
 read -p  "Install the networkmanager (ENTER to contiune "
 emerge -a networkmanager
 emerge networkmanager
