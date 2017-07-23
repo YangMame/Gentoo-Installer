@@ -12,7 +12,7 @@ read -p "Input the number you want to use (You must select the systemd !!!
 If you want to use gnome or other desktop which is using GTK , select gnome/systemd
 If you want to use KDE desktop select plasma/systemd
 Just only select /systemd is not a good idea , if you're not sure please select gnome/systemd
-" TMP
+" PROFILE
 eselect profile set $PROFILE
 read -p "ENTER to update the system"
 emerge -uvDN @world
