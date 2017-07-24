@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ##分区
+rm -r /mnt/gentoo
 mkdir /mnt/gentoo
 read -p "Do you want to adjust the partition ? (Input y to use fdisk or Enter to continue:  " TMP
 if [ "$TMP" == y ]
@@ -18,17 +19,16 @@ then read -p "Input y to use ext4 defalut to use btrfs  " TMP
     else mkfs.btrfs $ROOT -f
     fi
 fi
+umount $ROOT
 mount $ROOT /mnt/gentoo
 read -p "Do you have the /boot mount point? (y or Enter  " BOOT
 if [ "$BOOT" == y ]
 then fdisk -l
-    read -p "Input the /boot mount point:  " BOOT
+    read -p "Input the /boot mount point:  " boot
     read -p "Format it ? (y or Enter  " TMP
     if [ "$TMP" == y ]
-    then mkfs.fat -F32 $BOOT
+    then mkfs.fat -F32 $boot
     fi
-    mkdir /mnt/gentoo/boot
-    mount $BOOT /mnt/gentoo/boot
 fi
 read -p "Do you have the swap partition ? (y or Enter  " SWAP
 if [ "$SWAP" == y ]
@@ -47,6 +47,11 @@ wget -c -r -np -k -L -p http://mirrors.ustc.edu.cn/gentoo/releases/amd64/autobui
 cp mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/current-stage3-amd64-systemd/stage3-amd64-systemd*.tar.bz2 install.tar.bz2
 tar xvjpf install.tar.bz2 --xattrs --numeric-owner
 rm -r mirrors.ustc.edu.cn/ install.tar.bz2
+
+if [ "$BOOT" == y ]
+then umount $boot
+     mount $boot /mnt/gentoo/boot
+fi
 
 ##配置make.conf
 sed -i 's/CFLAGS=\"-O2 -pipe\"/CFLAGS=\"-march=native -O2 -pipe\"/g' /mnt/gentoo/etc/portage/make.conf ##你可以在此根据你的CPU修改优化例如改成-march=haswell -O3 -pipe（主要是因为我懒 后期会加上）
