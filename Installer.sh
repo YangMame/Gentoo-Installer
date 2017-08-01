@@ -80,7 +80,7 @@ mount --rbind /dev /mnt/gentoo/dev
 mount --make-rslave /mnt/gentoo/dev
 cp /etc/resolv.conf /mnt/gentoo/etc/
 cd root/
-wget https://raw.githubusercontent.com/yangxins/Gentoo-Installer/master/Config.sh
+wget https://raw.githubusercontent.com/YangMame/Gentoo-Installer/master/Config.sh
 chmod +x Config.sh
 rm /mnt/gentoo/etc/fstab
 genfstab -U -p /mnt/gentoo >> /mnt/gentoo/etc/fstab

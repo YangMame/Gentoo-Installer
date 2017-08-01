@@ -49,7 +49,7 @@ ENTER to continue"
 [3]  I will config by myself
 Input : " TMP
     if (($TMP==1))
-    then wget https://raw.githubusercontent.com/yangxins/Gentoo-Installer/master/Kernel-Config/Ubuntu.config
+    then wget https://raw.githubusercontent.com/YangMame/Gentoo-Installer/master/Kernel-Config/Ubuntu.config
         mv Ubuntu.config /usr/src/linux/.config
         cd /usr/src/linux
         read -p	"Are you using btrfs filesystem (y or Enter " tmp ##在这里你可以修改成你使用的文件系统
