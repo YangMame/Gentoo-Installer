@@ -1,5 +1,7 @@
 #!/bin/bash
 
+STAGE_MIRRORS=http://mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/
+
 ##分区
 umount /mnt/gentoo > /dev/null
 rm -r /mnt/gentoo > /dev/null
@@ -57,12 +59,12 @@ read -p "输入y使用openRC 回车使用systemd " INIT
 cd /mnt/gentoo
 rm index.html > /dev/null
 if [ "$INIT" == y ]
-then LATEST=$(wget -q http://mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/current-stage3-amd64/ && grep -o stage3-amd64-.........tar.bz2 index.html | head -1)
-wget http://mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/current-stage3-amd64/$LATEST
+then LATEST=$(wget -q $STAGE_MIRRORS/current-stage3-amd64/ && grep -o stage3-amd64-.........tar.bz2 index.html | head -1)
+wget $STAGE_MIRRORS/current-stage3-amd64/$LATEST
 tar xvjpf $LATEST --xattrs --numeric-owner
 else 
-LATEST=$(wget -q http://mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/current-stage3-amd64-systemd/ && grep -o stage3-amd64-systemd-.........tar.bz2 index.html | head -1)
-wget http://mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/current-stage3-amd64-systemd/$LATEST
+LATEST=$(wget -q $STAGE_MIRRORS/current-stage3-amd64-systemd/ && grep -o stage3-amd64-systemd-.........tar.bz2 index.html | head -1)
+wget $STAGE_MIRRORS/current-stage3-amd64-systemd/$LATEST
 tar xvjpf $LATEST --xattrs --numeric-owner
 fi
 
