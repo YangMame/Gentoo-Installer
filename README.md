@@ -2,7 +2,6 @@
 
  Live系统推荐用Ubuntu 
 
- #支持：
 Init：openRC,systemd
 
 Arch:x86_64
