@@ -4,8 +4,11 @@
 
  #支持：
 Init：openRC,systemd
+
 Arch:x86_64
+
 Boot:Legacy,UEFI
+
 Kernel:Genkernel,Download From Internet,Config By Yourself
 
 下载地址：https://raw.githubusercontent.com/YangMame/Gentoo-Installer/master/Installer.sh
