@@ -23,14 +23,14 @@ read -p "是否格式化？ （y或回车）  " TMP
 if [ "$TMP" == y ]
 then read -p "输入你想使用的文件系统:btrfs,xfs,jfs 回车或者其他字符将默认格式化为ext4(请事先确认当前系统支持此文件系统且有相应工具) " FILESYSTEM
     if [ "$FILESYSTEM" ==  ]
-    then mkfs.ext4 $ROOT
+    then FILESYSTEM=ext4&&mkfs.ext4 $ROOT
     elif [ "$FILESYSTEM" == btrfs ]
     then mkfs.btrfs $ROOT -f
     elif [ "$FILESYSTEM" == xfs ]
     then mkfs.xfs $ROOT
     elif [ "$FILESYSTEM" == jfs ]
     then mkfs.jfs $ROOT
-    else mkfs.ext4 $ROOT
+    else FILESYSTEM=ext4&&mkfs.ext4 $ROOT
     fi
 fi
 umount $ROOT > /dev/null
@@ -58,15 +58,17 @@ then fdisk -l
 fi
 
 ##安装文件
-read -p "输入y使用openRC 回车使用systemd " INIT
+read -p "输入y使用openRC 回车使用systemd " TMP
 cd /mnt/gentoo
 rm index.html > /dev/null
 if [ "$INIT" == y ]
+INIT=openrc
 then LATEST=$(wget -q $STAGE_MIRRORS/current-stage3-amd64/ && grep -o stage3-amd64-.........tar.bz2 index.html | head -1)
 wget $STAGE_MIRRORS/current-stage3-amd64/$LATEST
 echo 解压中...
 tar xjpf $LATEST --xattrs --numeric-owner
-else 
+else
+INIT=systemd 
 LATEST=$(wget -q $STAGE_MIRRORS/current-stage3-amd64-systemd/ && grep -o stage3-amd64-systemd-.........tar.bz2 index.html | head -1)
 wget $STAGE_MIRRORS/current-stage3-amd64-systemd/$LATEST
 echo 解压中...
