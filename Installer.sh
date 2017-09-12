@@ -132,4 +132,4 @@ cd root/
 wget https://raw.githubusercontent.com/YangMame/Gentoo-Installer/master/Config.sh
 chmod +x Config.sh
 rm /mnt/gentoo/etc/fstab
-chroot /mnt/gentoo /root/Config.sh $FILESYSTEM
+chroot /mnt/gentoo /root/Config.sh $FILESYSTEM $INIT

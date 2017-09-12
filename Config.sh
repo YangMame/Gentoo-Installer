@@ -5,16 +5,10 @@ source /etc/profile
 ##更新
 emerge-webrsync
 emerge --sync
-echo "************************************************************"
-eselect profile list | grep systemd
-echo "************************************************************"
-read -p "Input the number you want to use (You must select the systemd !!!
-If you want to use gnome or other desktop which is using GTK , select gnome/systemd
-If you want to use KDE desktop select plasma/systemd
-Just only select /systemd is not a good idea , if you're not sure please select gnome/systemd
-" PROFILE
+eselect profile list
+read -p "输入你想使用的配置 使用systemd需选上带有systemd字样的.如果你想使用gnome或者kde桌面则选上对应的，如果你想使用窗口管理则选择desktop（openRC用）或systemd（systemd用）即可" PROFILE
 eselect profile set $PROFILE
-read -p "ENTER to update the system"
+read -p "回车开始更新系统"
 emerge -uvDN @world
 
 ##时区
@@ -25,59 +19,54 @@ zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 eselect locale list
 echo "************************************************************"
-read -p "Which locale you want to use " TMP
+read -p "你想使用哪个语言 " TMP
 eselect locale set $TMP
 
 ##内核
 echo "************************************************************"
-read -p "Do you want to use the latest kernel ? (y or Enter  " TMP
+read -p "是否使用最新内核 y或回车跳过  " TMP
 if [ "$TMP" == y ]
 then echo "sys-kernel/gentoo-sources ~amd64" > /etc/portage/package.accept_keywords
 fi
 emerge gentoo-sources genkernel
 echo "************************************************************"
+
+##安装文件系统工具
+if [ $1 == btrfs ]
+then emerge sys-fs/btrfs-progs
+elif [ $1 == xfs ]
+then emerge sys-fs/xfsprogs
+elif [ $1 == jfs ]
+then emerge sys-fs/jfsutils
+fi
+
+cd /usr/sv/linux
+
 TMP=4
 while (($TMP!=1&&$TMP!=2&&$TMP!=3));do
-    read -p "You should select the systemd in kernel config like this：
-Gentoo Linux--->
-    Support for init systems....managers --->
-        [*] systemd
-ENTER to continue"
-    read -p "Which way you want to compile
-[1]  Use Ubuntu kernel config (If you are a new user try this)
-[2]  Use genkernel all
-[3]  I will config by myself
-Input : " TMP
+    read -p "你想如何编译内核
+[1]  从网络上下载自己的内核配置
+[2]  使用genkernel all （如果你不会配置内核 建议选择这个）
+[3]  现场开始编译（建议参照金步国的文档编译：http://www.jinbuguo.com/kernel/longterm-linux-kernel-options.html）
+: " TMP
     if (($TMP==1))
-    then wget https://raw.githubusercontent.com/YangMame/Gentoo-Installer/master/Kernel-Config/Ubuntu.config
-        mv Ubuntu.config /usr/src/linux/.config
-        cd /usr/src/linux
-        read -p	"Are you using btrfs filesystem (y or Enter " tmp ##在这里你可以修改成你使用的文件系统
-        if [ "$tmp" == y ]
-        then emerge btrfs-progs
-        fi
-        echo "If you are using btrfs or other filesystem pelease select it or just exit it"
+    then read -p "输入下载地址：" TMP
+	wget -v TMP -O .config
         make menuconfig
+	read -p "回车开始编译"
         make -j8 && make modules_install ##根据你CPU修改-j8 推荐核数x2
         make install
         genkernel --install initramfs
     elif (($TMP==2))
     then genkernel all
     elif (($TMP==3))
-    then cd /usr/src/linux
-        read -p "Download form internet ? (y or Enter  " tmp
-        if [ "$tmp" == y ]
-        then read -p "Input the link to download :" tmp
-            wget $tmp -O .config
-        fi
-        read -p	"Are you using btrfs filesystem (y or Enter " tmp
-        if [ "$tmp" == y ]
-        then emerge btrfs-progs
-        fi
+    then
+	rm .config
         make menuconfig
+	read -p "回车开始编译安装内核"
         make -j8 && make modules_install
         make install
-        genkernel --install initramfses_install
+        genkernel --install initramfs
     else echo Error ! Input the currect number !
     fi
 done
@@ -85,8 +74,8 @@ emerge  sys-kernel/linux-firmware
 
 ##NetWork
 echo "************************************************************"
-read -p  "Install the networkmanager (ENTER to contiune "
-emerge -a networkmanager
+read -p  "安装NetworkManager "
+emerge --autounmask-write  networkmanager
 etc-update --automode -3
 emerge networkmanager
 systemctl enable NetworkManager
@@ -117,3 +106,9 @@ ln -sf /proc/self/mounts /etc/mtab
 systemd-machine-id-setup
 echo 'GRUB_CMDLINE_LINUX=\"init=/usr/lib/systemd/systemd\"' >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
+
+##安装桌面环境
+
+##添加用户
+
+##开机自启
