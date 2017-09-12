@@ -1,6 +1,9 @@
 #!/bin/bash
 
+##以下源地址可以自己替换以避免下载速度慢的问题
 STAGE_MIRRORS=http://mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/
+GENTOO_MIRRORS=https://mirrors.ustc.edu.cn/gentoo/
+PORTAGE_MIRRORS=rsync://rsync.mirrors.ustc.edu.cn/gentoo-portage/
 
 ##分区
 umount /mnt/gentoo > /dev/null
@@ -79,7 +82,7 @@ fi
 
 ##配置make.conf
 sed -i 's/CFLAGS=\"-O2 -pipe\"/CFLAGS=\"-march=native -O2 -pipe\"/g' /mnt/gentoo/etc/portage/make.conf ##你可以在此根据你的CPU修改优化例如改成-march=haswell -O3 -pipe
-echo "GENTOO_MIRRORS=\"https://mirrors.ustc.edu.cn/gentoo/\" ">> /mnt/gentoo/etc/portage/make.conf ##如果此软件源巨慢或者你在国外 可以自行修改
+echo "GENTOO_MIRRORS=\"$GENTOO_MIRRORS\" ">> /mnt/gentoo/etc/portage/make.conf ##如果此软件源巨慢或者你在国外 可以自行修改
 echo "L10N=\"en-US zh-CN\"
 LINGUAS=\"en_US zh_CN\"" >> /mnt/gentoo/etc/portage/make.conf
 
@@ -114,7 +117,7 @@ main-repo = gentoo
 [gentoo]
 location = /usr/portage
 sync-type = rsync
-sync-uri = rsync://rsync.mirrors.ustc.edu.cn/gentoo-portage/
+sync-uri = $PORTAGE_MIRRORS
 auto-sync = yes" > /mnt/gentoo/etc/portage/repos.conf/gentoo.conf ##同上上
 
 ##Chroot
