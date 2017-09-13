@@ -50,7 +50,7 @@ elif [ $1 == jfs ]
 then emerge sys-fs/jfsutils
 fi
 
-cd /usr/sv/linux
+cd /usr/src/linux
 
 TMP=4
 while (($TMP!=1&&$TMP!=2&&$TMP!=3));do
@@ -60,8 +60,8 @@ while (($TMP!=1&&$TMP!=2&&$TMP!=3));do
 [3]  现场开始编译（建议参照金步国的文档配置：http://www.jinbuguo.com/kernel/longterm-linux-kernel-options.html）
 : " TMP
     if (($TMP==1))
-    then read -p "输入下载地址：" TMP
-	wget -v TMP -O .config
+    then read -p "输入下载地址：" LINK
+	wget -v $LINK -O .config
         make menuconfig
 	read -p "回车开始编译安装内核"
         make -j8 && make modules_install ##根据你CPU修改-j8 推荐核数x2
@@ -131,14 +131,18 @@ then emerge gnome-shell gdm gnome-termianl
 gpasswd -a $USER gdm
 systemctl enable gdm
 elif [ "$PROFILE" == 6 ]
-then emerge kde-plasma/plasma-meta ssdm konsole plasma-pa plasma-nm
+then emerge --autounmask-write kde-plasma/plasma-meta sddm konsole plasma-pa plasma-nm
+etc-update --automode -3
+emerge kde-plasma/plasma-meta sddm konsole plasma-pa plasma-nm
 sed -i 's/DISPLAYMANAGER=\"xdm\"/DISPLAYMANAGER=\"sddm\"/g' /etc/conf.d/xdm
 usermod -a -G video sddm
 gpasswd -a $USER sddm
 sddm --example-config > /etc/sddm.conf
 rc-update add xdm default
 elif [ "$PROFILE" == 7 ]
-then emerge kde-plasma/plasma-meta ssdm konsole plasma-pa plasma-nm
+then emerge --autounmask-write kde-plasma/plasma-meta sddm konsole plasma-pa plasma-nm
+etc-update --automode -3
+emerge kde-plasma/plasma-meta sddm konsole plasma-pa plasma-nm
 systemctl enable sddm
 usermod -a -G video sddm
 gpasswd -a $USER sddm
@@ -150,6 +154,8 @@ if [ $3 == 3 ]
 then echo "=sys-power/bbswitch-9999 **
 =x11-misc/bumblebee-9999 **
 =x11-misc/primus-0.2 ~amd64" >> /etc/portage/package.accept_keywords
+emerge --autounmask-write bbswitch primus bumblebee
+etc-update --automode -3
 emerge bbswitch primus bumblebee
 sed -i 's/Bridge=auto/Bridge=primus/g' /etc/bumblebee/bumblebee.conf
 sed -i 's/PMMethod=auto/PMMethod=bbswitch/g' /etc/bumblebee/bumblebee.conf
