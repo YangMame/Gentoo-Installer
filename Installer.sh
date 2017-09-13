@@ -58,7 +58,7 @@ then fdisk -l
 fi
 
 ##安装文件
-read -p "输入y使用openRC 回车使用systemd " TMP
+read -p "输入y使用openRC 回车使用systemd(如果你使用gnome桌面请务必选择systemd) " TMP
 cd /mnt/gentoo
 rm index.html > /dev/null
 if [ "$INIT" == y ]
@@ -134,4 +134,4 @@ cd root/
 wget https://raw.githubusercontent.com/YangMame/Gentoo-Installer/master/Config.sh
 chmod +x Config.sh
 rm /mnt/gentoo/etc/fstab
-chroot /mnt/gentoo /root/Config.sh $FILESYSTEM $INIT
+chroot /mnt/gentoo /root/Config.sh $FILESYSTEM $INIT $VIDEO

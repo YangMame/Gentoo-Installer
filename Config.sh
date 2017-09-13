@@ -6,11 +6,9 @@ source /etc/profile
 emerge-webrsync
 emerge --sync
 eselect profile list
-read -p "输入你想使用的配置 
-使用systemd需选上带有systemd字样的.如果你想使用gnome或者kde桌面则选上对应的（之后将直接安装桌面），如果你想使用其他桌面或者窗口管理则选择desktop（openRC用）或systemd（systemd用）即可" 
-PROFILE
+read -p "输入你想使用的配置 使用systemd需选上带有systemd字样的（gnome桌面请选上systemd）.如果你想使用gnome或者kde桌面则选上对应的（只有选择5,6,7将自动安装基础桌面），如果你想使用其他桌面或者wm则选择desktop（openRC用）或systemd（systemd用）即可" PROFILE
 eselect profile set $PROFILE
-read -p "回车开始更新系统"
+read -p "回车开始更新系统（可能要花一段时间，可以去看俩集番）"
 emerge -uvDN @world
 
 ##时区
@@ -23,12 +21,25 @@ eselect locale list
 read -p "你想使用哪个语言 " TMP
 eselect locale set $TMP
 
+##配置挂载点
+wget -q https://git.archlinux.org/arch-install-scripts.git/snapshot/arch-install-scripts-17.tar.gz
+tar -xf arch-install-scripts-17.tar.gz
+cd arch-install-scripts-17
+sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' Makefile
+make > /dev/null
+make install > /dev/null
+genfstab -U / > /etc/fstab
+sed -i '/selinuxfs/d' /etc/fstab
+sed -i '/efivarfs/d' /etc/fstab
+rm -r arch-install-scripts-17*
+
 ##内核
-read -p "是否使用最新内核 y或回车跳过  " TMP
+read -p "使用哪个内核？ck-sources(推荐)或gentoo-sources输入y使用ck回车将使用gentoo-sources  " TMP
 if [ "$TMP" == y ]
-then echo "sys-kernel/gentoo-sources ~amd64" > /etc/portage/package.accept_keywords
+then echo sys-kernel/ck-sources ~amd64 >> /etc/portage/package.accept_keywords
+emerge ck-sources genkernel
+else emerge gentoo-sources genkernel
 fi
-emerge gentoo-sources genkernel
 
 ##安装文件系统工具
 if [ $1 == btrfs ]
@@ -99,7 +110,7 @@ else emerge grub
 fi
 
 if [ $2 == systemd ]
-then echo 'GRUB_CMDLINE_LINUX=\"init=/usr/lib/systemd/systemd\"' >> /etc/default/grub
+then sed -i 's/\# GRUB_CMDLINE_LINUX=\"init=\/usr\/lib\/systemd\/systemd\"/GRUB_CMDLINE_LINUX=\"init=\/usr\/lib\/systemd\/systemd\"/g' /etc/default/grub
 ln -sf /proc/self/mounts /etc/mtab
 systemd-machine-id-setup
 systemctl enable NetworkManager
@@ -108,6 +119,49 @@ fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
-##安装桌面环境
-
 ##添加用户
+read -p "输入你想创建的用户名(仅限小写字母，不推荐使用符号) :" USER
+useradd -m -G users,wheel,audio,cdrom,floppy,portage,usb,video $USER
+echo "设置用户密码"
+passwd $USER
+
+##安装桌面环境
+if [ "$PROFILE" == 5 ]
+then emerge gnome-shell gdm gnome-termianl
+gpasswd -a $USER gdm
+systemctl enable gdm
+elif [ "$PROFILE" == 6 ]
+then emerge kde-plasma/plasma-meta ssdm konsole plasma-pa plasma-nm
+sed -i 's/DISPLAYMANAGER=\"xdm\"/DISPLAYMANAGER=\"sddm\"/g' /etc/conf.d/xdm
+usermod -a -G video sddm
+gpasswd -a $USER sddm
+sddm --example-config > /etc/sddm.conf
+rc-update add xdm default
+elif [ "$PROFILE" == 7 ]
+then emerge kde-plasma/plasma-meta ssdm konsole plasma-pa plasma-nm
+systemctl enable sddm
+usermod -a -G video sddm
+gpasswd -a $USER sddm
+sddm --example-config > /etc/sddm.conf
+fi
+
+##Bumblebee双显卡配置
+if [ $3 == 3 ]
+then echo "=sys-power/bbswitch-9999 **
+=x11-misc/bumblebee-9999 **
+=x11-misc/primus-0.2 ~amd64" >> /etc/portage/package.accept_keywords
+emerge bbswitch primus bumblebee
+sed -i 's/Bridge=auto/Bridge=primus/g' /etc/bumblebee/bumblebee.conf
+sed -i 's/PMMethod=auto/PMMethod=bbswitch/g' /etc/bumblebee/bumblebee.conf
+sed -i '5,7d' /etc/init.d/bumblebee
+if [ $2 == systemd ]
+then systemctl enable bumblebeed
+else rc-update add bumblebee default
+fi
+gpasswd -a $USER bumblebee
+fi
+
+##自定义
+read -p "回车进入系统修改配置，运行命令等(配置完之后exit即可退出）"
+bash
+echo "谢谢使用 有用的话请赏个star"
