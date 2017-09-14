@@ -7,8 +7,8 @@ PORTAGE_MIRRORS=rsync://rsync.mirrors.ustc.edu.cn/gentoo-portage/
 
 ##判断用户
 if [ `whoami` != root ];then
-	echo "请在root用户下运行,接下来可能需要你输入密码（liveCD不需要输入）"
-	sudo -i
+	echo "请在root用户下运行"
+	exit
 fi
 
 ##分区
