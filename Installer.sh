@@ -91,6 +91,8 @@ if [ "$BOOT" == y ];then
 fi
 
 ##配置make.conf
+sed -i '/CPU/d' /mnt/gentoo/etc/portage/make.conf
+sed i '/USE/d' /mnt/gentoo/etc/portage/make.conf
 sed -i 's/CFLAGS=\"-O2 -pipe\"/CFLAGS=\"-march=native -O2 -pipe\"/g' /mnt/gentoo/etc/portage/make.conf ##你可以在此根据你的CPU修改优化例如改成-march=haswell -O3 -pipe
 echo "GENTOO_MIRRORS=\"$GENTOO_MIRRORS\" ">> /mnt/gentoo/etc/portage/make.conf ##如果此软件源巨慢或者你在国外 可以自行修改
 echo "L10N=\"en-US zh-CN\"
