@@ -66,7 +66,7 @@ if [ "$SWAP" == y ];then
 fi
 
 ##安装文件
-read -p "输入y使用openRC 回车使用systemd(如果你使用gnome桌面请务必选择systemd) " TMP
+read -p "输入y使用openRC 回车使用systemd(如果你使用gnome桌面请务必选择systemd) " INIT
 cd /mnt/gentoo
 rm index.html > /dev/null
 if [ "$INIT" == y ];then
