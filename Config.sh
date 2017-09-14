@@ -101,9 +101,7 @@ read -p "输入你的主机名：  " TMP
 echo hostname=\"$TMP\" > /etc/conf.d/hostname
 
 ##Tools
-emerge app-admin/sysklogd
-emerge sys-process/cronie
-emerge sudo
+emerge app-admin/sysklogd sys-process/cronie sudo layman
 sed -i 's/\# \%wheel ALL=(ALL) ALL/\%wheel ALL=(ALL) ALL/g' /etc/sudoers
 crontab /etc/crontab
 echo "更改root密码 "
@@ -183,6 +181,6 @@ if [ $3 == 3 ];then
 fi
 
 ##自定义
-read -p "回车进入系统修改配置，运行命令等(配置完之后exit即可退出）"
+read -p "回车进入系统运行命令,如果没有选择自动安装桌面的profile请在此步骤按照wiki安装桌面(配置完之后exit即可退出）"
 bash
 echo "谢谢使用 有用的话请赏个star"
