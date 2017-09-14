@@ -31,6 +31,7 @@ make install > /dev/null
 genfstab -U / > /etc/fstab
 sed -i '/selinuxfs/d' /etc/fstab
 sed -i '/efivarfs/d' /etc/fstab
+cd ..
 rm -r arch-install-scripts-17*
 
 ##内核
