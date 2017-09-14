@@ -116,7 +116,7 @@ if [ "$TMP" == y ];then
 else
 	emerge grub
 	fdisk -l
-	read -p "Input the disk you want to install the grub  " GRUB
+	read -p "输入你想安装Grub的磁盘  " GRUB
 	grub-install --target=i386-pc $GRUB
 fi
 
