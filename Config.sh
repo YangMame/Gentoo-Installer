@@ -8,8 +8,8 @@ emerge --sync
 eselect profile list
 read -p "输入你想使用的配置 使用systemd需选上带有systemd字样的（gnome桌面请选上systemd）.如果你想使用gnome或者kde桌面则选上对应的（只有选择5,6,7将自动安装基础桌面），如果你想使用其他桌面或者wm则选择desktop（openRC用）或systemd（systemd用）即可" PROFILE
 eselect profile set $PROFILE
-read -p "回车开始更新系统（可能要花一段时间，可以去看俩集番）"
-emerge -uvDN @world
+read -p "回车开始更新系统（可能要花一段时间，可以去看部电影）"
+emerge -uvDN --with-bdeps=y @world
 
 ##时区
 echo "Asia/Shanghai" > /etc/timezone
@@ -76,7 +76,8 @@ read -p "你想如何编译内核
 		make install
 		genkernel --install initramfs
 	elif [ "$TMP" == 2 ];then
-		genkernel all
+        read -p "如果你使用的不是ext文件系统，则接下来需要进入内核配置中的file system选中你使用的文件系统（不是m是*选中)然后保存退出继续，否则直接保存退出开始编译"
+		genkernel --menuconfig all
 	elif [ "$TMP" == 3 ];then
 		rm .config > /dev/null
 		tmp=n
