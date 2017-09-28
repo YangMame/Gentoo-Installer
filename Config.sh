@@ -79,7 +79,7 @@ read -p "你想如何编译内核
         read -p "如果你使用的不是ext文件系统，则接下来需要进入内核配置中的file system选中你使用的文件系统（不是m是*选中)然后保存退出继续，否则直接保存退出开始编译"
 		genkernel --menuconfig all
 	elif [ "$TMP" == 3 ];then
-		rm .config > /dev/null
+		rm -f .config
 		tmp=n
 		while [ "$tmp" == n ];do
 			make menuconfig

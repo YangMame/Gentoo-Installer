@@ -12,8 +12,8 @@ if [ `whoami` != root ];then
 fi
 
 ##分区
-umount /mnt/gentoo > /dev/null
-rm -r /mnt/gentoo > /dev/null
+umount /mnt/gentoo
+rm -rf /mnt/gentoo
 mkdir -v /mnt/gentoo
 
 read -p "是否进行分区？（输入y使用cfdisk进行分区，回车跳过） " TMP
@@ -41,7 +41,7 @@ if [ "$TMP" == y ];then
 	fi
 fi
 
-umount $ROOT > /dev/null
+umount $ROOT
 mount -v $ROOT /mnt/gentoo
 
 read -p "是否有Boot分区（UEFI必选，输入efi分区即可）y或回车  " BOOT
@@ -60,15 +60,15 @@ if [ "$SWAP" == y ];then
 	read -p "输入挂载点:  " SWAP
 	read -P "是否格式化 ? (y or Enter  " TMP
 	if [ "$TMP" == y ];then
-		mkswap $SWAP > /dev/null
+		mkswap -f $SWAP
 	fi
-	swapon $SWAP > /dev/null
+	swapon -f $SWAP
 fi
 
 ##安装文件
 read -p "输入y使用openRC 回车使用systemd(如果你使用gnome桌面请务必选择systemd) " INIT
 cd /mnt/gentoo
-rm index.html > /dev/null
+rm -f index.html
 if [ "$INIT" == y ];then
 	INIT=openrc
 	LATEST=$(wget -q $STAGE_MIRRORS/current-stage3-amd64/ && grep -o stage3-amd64-.........tar.bz2 index.html | head -1)
@@ -86,7 +86,7 @@ fi
 rm $LATEST
 
 if [ "$BOOT" == y ];then
-	umount $boot > /dev/null
+	umount $boot
 	mount -v $boot /mnt/gentoo/boot
 fi
 
@@ -138,7 +138,7 @@ mount --rbind /sys /mnt/gentoo/sys
 mount --make-rslave /mnt/gentoo/sys
 mount --rbind /dev /mnt/gentoo/dev
 mount --make-rslave /mnt/gentoo/dev
-rm /mnt/gentoo/etc/resolv.conf > /dev/null
+rm -f /mnt/gentoo/etc/resolv.conf
 cp /etc/resolv.conf /mnt/gentoo/etc/
 cd root/
 wget https://raw.githubusercontent.com/YangMame/Gentoo-Installer/master/Config.sh
