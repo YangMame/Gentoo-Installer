@@ -1,9 +1,10 @@
 #!/bin/bash
 
 ##以下源地址可以自己替换以避免下载速度慢的问题
-STAGE_MIRRORS=http://mirrors.ustc.edu.cn/gentoo/releases/amd64/autobuilds/
-GENTOO_MIRRORS=https://mirrors.ustc.edu.cn/gentoo/
-PORTAGE_MIRRORS=rsync://rsync.mirrors.ustc.edu.cn/gentoo-portage/
+MIRRORS=mirrors.ustc.edu.cn
+GENTOO_MIRRORS=https://$MIRRORS/gentoo
+STAGE_MIRRORS=https://$GENTOO_MIRRORS/releases/amd64/autobuilds/
+PORTAGE_MIRRORS=rsync://rsync.$MIRRORS/gentoo-portage/
 
 ##判断用户
 if [ `whoami` != root ];then
