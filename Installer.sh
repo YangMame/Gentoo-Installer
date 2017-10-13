@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ##以下源地址可以自己替换以避免下载速度慢的问题
-MIRRORS=mirrors.ustc.edu.cn
-GENTOO_MIRRORS=https://$MIRRORS/gentoo
-STAGE_MIRRORS=$GENTOO_MIRRORS/releases/amd64/autobuilds
-PORTAGE_MIRRORS=rsync://rsync.$MIRRORS/gentoo-portage
+MIRROR=mirrors.ustc.edu.cn
+GENTOO_MIRROR=https://$MIRROR/gentoo
+STAGE_MIRROR=$GENTOO_MIRROR/releases/amd64/autobuilds
+PORTAGE_MIRROR=rsync://rsync.$MIRROR/gentoo-portage
 
 ##判断用户
 if [ `whoami` != root ];then
@@ -72,14 +72,14 @@ cd /mnt/gentoo
 rm -f index.html
 if [ "$INIT" == y ];then
 	INIT=openrc
-	LATEST=$(wget -q $STAGE_MIRRORS/current-stage3-amd64/ && grep -o stage3-amd64-.........tar.bz2 index.html | head -1)
-	wget $STAGE_MIRRORS/current-stage3-amd64/$LATEST
+	LATEST=$(wget -q $STAGE_MIRROR/current-stage3-amd64/ && grep -o stage3-amd64-.........tar.bz2 index.html | head -1)
+	wget $STAGE_MIRROR/current-stage3-amd64/$LATEST
 	echo 解压中...
 	tar xjpf $LATEST --xattrs --numeric-owner
 else
 	INIT=systemd 
-	LATEST=$(wget -q $STAGE_MIRRORS/current-stage3-amd64-systemd/ && grep -o stage3-amd64-systemd-.........tar.bz2 index.html | head -1)
-	wget $STAGE_MIRRORS/current-stage3-amd64-systemd/$LATEST
+	LATEST=$(wget -q $STAGE_MIRROR/current-stage3-amd64-systemd/ && grep -o stage3-amd64-systemd-.........tar.bz2 index.html | head -1)
+	wget $STAGE_MIRROR/current-stage3-amd64-systemd/$LATEST
 	echo 解压中...
 	tar xjpf $LATEST --xattrs --numeric-owner
 fi
@@ -95,7 +95,7 @@ fi
 sed -i '/CPU/d' /mnt/gentoo/etc/portage/make.conf
 sed i '/USE/d' /mnt/gentoo/etc/portage/make.conf
 sed -i 's/CFLAGS=\"-O2 -pipe\"/CFLAGS=\"-march=native -O2 -pipe\"/g' /mnt/gentoo/etc/portage/make.conf ##你可以在此根据你的CPU修改优化例如改成-march=haswell -O3 -pipe
-echo "GENTOO_MIRRORS=\"$GENTOO_MIRRORS\" ">> /mnt/gentoo/etc/portage/make.conf ##如果此软件源巨慢或者你在国外 可以自行修改
+echo "GENTOO_MIRROR=\"$GENTOO_MIRROR\" ">> /mnt/gentoo/etc/portage/make.conf ##如果此软件源巨慢或者你在国外 可以自行修改
 echo "L10N=\"en-US zh-CN\"
 LINGUAS=\"en_US zh_CN\"" >> /mnt/gentoo/etc/portage/make.conf
 
@@ -130,7 +130,7 @@ main-repo = gentoo
 [gentoo]
 location = /usr/portage
 sync-type = rsync
-sync-uri = $PORTAGE_MIRRORS
+sync-uri = $PORTAGE_MIRROR
 auto-sync = yes" > /mnt/gentoo/etc/portage/repos.conf/gentoo.conf ##同上上
 
 ##Chroot
