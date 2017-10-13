@@ -3,7 +3,7 @@
 ##以下源地址可以自己替换以避免下载速度慢的问题
 MIRRORS=mirrors.ustc.edu.cn
 GENTOO_MIRRORS=https://$MIRRORS/gentoo
-STAGE_MIRRORS=https://$GENTOO_MIRRORS/releases/amd64/autobuilds
+STAGE_MIRRORS=$GENTOO_MIRRORS/releases/amd64/autobuilds
 PORTAGE_MIRRORS=rsync://rsync.$MIRRORS/gentoo-portage
 
 ##判断用户
