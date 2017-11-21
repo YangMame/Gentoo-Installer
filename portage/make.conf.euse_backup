@@ -9,7 +9,7 @@ MAKEOPTS="-j5"
 
 # USE
 SUPPORT="btrfs touchpad mtp samba git"
-DESKTOP="qt wayland gles dolphin javafx kms pulseaudio networkmanager infinality"
+DESKTOP="qt wayland gles dolphin javafx kms pulseaudio networkmanager"
 FUCK="-systemd -bindist -grub -plymouth -consolekit"
 ELSE="clang python elogind dolphin vlc client nftables"
 
@@ -21,7 +21,7 @@ DISTDIR="${PORTDIR}/distfiles"
 PKGDIR="${PORTDIR}/packages"
 # GENTOO_MIRRORS="https://mirrors.tuna.tsinghua.edu.cn/gentoo/"
 # GENTOO_MIRRORS="https://mirrors.ustc.edu.cn/gentoo/"
-EMERGE_DEFAULT_OPTS="--ask --keep-going --with-bdeps=y"
+EMERGE_DEFAULT_OPTS="--keep-going --with-bdeps=y"
 FEATURES="${FEATURES} -userpriv -usersandbox -sandbox"
 PORTAGE_REPO_DUPLICATE_WARN="0"
 
@@ -35,6 +35,7 @@ LINGUAS="en_US zh_CN en zh"
 # Else
 
 VIDEO_CARDS="intel i965 nvidia"
+GRUB_PLATFORMS="efi-64"
 
 QEMU_SOFTMMU_TARGETS="x86_64 arm sparc"
 QEMU_USER_TARGETS="x86_64"
