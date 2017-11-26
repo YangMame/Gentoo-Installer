@@ -110,15 +110,15 @@ while (($VIDEO!=1&&$VIDEO!=2&&$VIDEO!=3&&$VIDEO!=4&&$VIDEO!=5));do
 [5]  Intel/AMD"
 	read VIDEO
 	if [ "$VIDEO" == 1 ];then
-		echo VIDEO_CARDS=\"intel i915\" >> /mnt/gentoo/etc/portage/make.conf
+		echo VIDEO_CARDS=\"intel i965\" >> /mnt/gentoo/etc/portage/make.conf
 	elif [ "$VIDEO" == 2 ];then
 		echo VIDEO_CARDS=\"nvidia\" >> /mnt/gentoo/etc/portage/make.conf
 	elif [ "$VIDEO" == 3 ];then
-		echo VIDEO_CARDS=\"intel i915 nvidia\" >> /mnt/gentoo/etc/portage/make.conf
+		echo VIDEO_CARDS=\"intel i965 nvidia\" >> /mnt/gentoo/etc/portage/make.conf
 	elif [ "$VIDEO" == 4 ];then
 		echo VIDEO_CARDS=\"radeon\" >> /mnt/gentoo/etc/portage/make.conf
 	elif [ "$VIDEO" == 5 ];then
-		echo VIDEO_CARDS=\"intel i915 radeon\" >> /mnt/gentoo/etc/portage/make.conf
+		echo VIDEO_CARDS=\"intel i965 radeon\" >> /mnt/gentoo/etc/portage/make.conf
 	else echo 请输入正确数字
 fi
 done
